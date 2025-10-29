@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GenAI-Powered Market Assistant</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        #chat-window { border: 1px solid #ccc; padding: 10px; height: 300px; overflow-y: scroll; margin-bottom: 10px; background-color: #f9f9f9; }
+        .message { margin-bottom: 8px; padding: 5px 10px; border-radius: 10px; max-width: 80%; }
+        .user-msg { background-color: #e0f7fa; text-align: right; margin-left: auto; }
+        .bot-msg { background-color: #c8e6c9; text-align: left; margin-right: auto; }
+        #input-container { display: flex; }
+        #query-input { flex-grow: 1; padding: 10px; border: 1px solid #ccc; border-radius: 5px 0 0 5px; }
+        #send-button { padding: 10px 15px; background-color: #4CAF50; color: white; border: none; cursor: pointer; border-radius: 0 5px 5px 0; }
+    </style>
+</head>
+<body>
+    <h2>🤖 GenAI-Powered Market Assistant</h2>
+    <div id="chat-window">
+        <div class="message bot-msg">Hello! Ask me something about India VIX</div>
+    </div>
+
+    <div id="input-container">
+        <input type="text" id="query-input" placeholder="Type your message here..." onkeypress="if(event.keyCode === 13) sendMessage()">
+        <button id="send-button" onclick="sendMessage()">Send</button>
+    </div>
+
+    <script>
+    async function sendMessage() {
+        const inputElement = document.getElementById('query-input');
+        const query = inputElement.value.trim();
+        const chatWindow = document.getElementById('chat-window');
+
+        if (query === "") return;
+
+        // 1. Display User Message
+        const userMsg = document.createElement('div');
+        userMsg.className = 'message user-msg';
+        userMsg.textContent = query;
+        chatWindow.appendChild(userMsg);
+
+        // Clear input and scroll to bottom
+        inputElement.value = '';
+        chatWindow.scrollTop = chatWindow.scrollHeight;
+        
+        // Disable input while waiting for response
+        inputElement.disabled = true;
+        document.getElementById('send-button').disabled = true;
+        
+        try {
+            // 2. Call the FastAPI /chat endpoint using Fetch API
+            const formData = new URLSearchParams();
+            formData.append('query', query);
+
+            // Await the fetch call
+            const response = await fetch('/chat', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: formData.toString()
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            
+            // 🌟 THE CRITICAL FIX: Add 'await' here 🌟
+            const botResponseText = await response.text(); 
+            
+            console.log("Response text:", botResponseText) // This will now log the actual string
+            
+            // 3. Display Bot Response
+            const botMsg = document.createElement('div');
+            botMsg.className = 'message bot-msg';
+            botMsg.textContent = botResponseText; // This now uses the string content
+            chatWindow.appendChild(botMsg);
+
+        } catch (error) {
+            console.error('Error:', error);
+            const errorMsg = document.createElement('div');
+            errorMsg.className = 'message bot-msg';
+            errorMsg.textContent = "Error: Could not connect to the server.";
+            chatWindow.appendChild(errorMsg);
+        } finally {
+            // Re-enable input and scroll to bottom
+            inputElement.disabled = false;
+            document.getElementById('send-button').disabled = false;
+            chatWindow.scrollTop = chatWindow.scrollHeight;
+            inputElement.focus(); // Focus back to input
+        }
+    }
+</script>
+</body>
+</html>

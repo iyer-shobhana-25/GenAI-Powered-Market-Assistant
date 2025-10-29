@@ -1,0 +1,7 @@
+langchain_google_genai 
+langgraph 
+python-dotenv 
+joblib 
+pandas
+"fastapi[standard]"
+uvicorn
