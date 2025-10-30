@@ -21,7 +21,6 @@ git clone https://github.com/iyer-shobhana-25/GenAI-Powered-Market-Assistant
 cd GenAI-Powered-Market-Assistant
 ````
 
-*(Replace `https://github.com/iyer-shobhana-25/GenAI-Powered-Market-Assistant` and `GenAI-Powered-Market-Assistant` with your project's actual details.)*
 
 ### 2\. Set Up Environment Variables
 
@@ -46,7 +45,7 @@ set GOOGLE_API_KEY="YOUR_API_KEY_HERE"
 set MODEL_NAME="gemini-2.5-flash"
 ```
 
-Or Create an .env file for Same
+Or you Create an `.env` file for the same.
 
 ### 3\. Install Dependencies
 
@@ -83,18 +82,7 @@ Once the application is running, you can access the following in your web browse
 
   * `finance_genai_assistant.py`: The main server application file.
   * `requirements.txt`: A list of all project dependencies.
+  * `data_processing.ipynb`: This notebook consists of data preprocessing and ML model training.
+  * `sample_dataset_23-25.csv`: India vix Dataset on which ML Model is trained.
 
 -----
-
-## 🤝 Contribution
-
-If you'd like to contribute, please fork the repository and use a feature branch. Pull requests are warmly welcome.
-
-## 📄 License
-
-This project is licensed under the [LICENSE NAME] License - see the `LICENSE.md` file for details.
-
-```
-
-Would you like to customize any section of this README, or add more specific details about your project's features?
-```
